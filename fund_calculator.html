@@ -1,0 +1,2646 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            /* width: 80%; */
+            /* max-width: 1200px; */
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            font-weight: 300;
+        }
+
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .content {
+            padding: 30px;
+        }
+
+        .add-fund-section {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            border-left: 4px solid #4facfe;
+        }
+
+        .add-fund-section h2 {
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 1.3em;
+        }
+
+        .form-group {
+            display: flex;
+            gap: 15px;
+            align-items: end;
+            flex-wrap: wrap;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            min-width: 150px;
+        }
+
+        .input-group label {
+            margin-bottom: 5px;
+            font-weight: 500;
+            color: #555;
+        }
+
+        .input-group input {
+            padding: 10px 12px;
+            border: 2px solid #e1e5e9;
+            border-radius: 6px;
+            font-size: 14px;
+            transition: border-color 0.3s ease;
+        }
+
+        .input-group input:focus {
+            outline: none;
+            border-color: #4facfe;
+            box-shadow: 0 0 0 3px rgba(79, 172, 254, 0.1);
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(79, 172, 254, 0.4);
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #5a6268;
+        }
+
+        .btn-danger {
+            background: #dc3545;
+            color: white;
+            padding: 5px 10px;
+            font-size: 12px;
+        }
+
+        .btn-danger:hover {
+            background: #c82333;
+        }
+
+        .btn-warning {
+            background: #ffc107;
+            color: #333;
+            padding: 5px 10px;
+            font-size: 12px;
+            margin-right: 5px;
+        }
+
+        .btn-warning:hover {
+            background: #e0a800;
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+
+        .stats-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 10px 20px;
+            border-radius: 8px;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            border-top: 3px solid #4facfe;
+        }
+
+        .stat-card h3 {
+            color: #666;
+            font-size: 0.9em;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .stat-card .value {
+            font-size: 1.8em;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .stat-card .unit {
+            color: #999;
+            font-size: 0.9em;
+        }
+
+        .positive { color: #28a745; }
+        .negative { color: #dc3545; }
+        .neutral { color: #6c757d; }
+
+        .funds-section h2 {
+            color: #333;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .table-container {
+            overflow-x: auto;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            min-width: 800px;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #e1e5e9;
+        }
+
+        th {
+            background: #f8f9fa;
+            font-weight: 600;
+            color: #333;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        tr:hover {
+            background: #f8f9fa;
+        }
+
+        .fund-code {
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+            color: #4facfe;
+        }
+
+        .fund-name {
+            max-width: 500px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .number {
+            text-align: right;
+            font-family: 'Courier New', monospace;
+        }
+
+        .loading {
+            opacity: 0.6;
+            position: relative;
+        }
+
+        .loading::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 20px;
+            height: 20px;
+            margin: -10px 0 0 -10px;
+            border: 2px solid #f3f3f3;
+            border-top: 2px solid #4facfe;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #666;
+        }
+
+        .empty-state img {
+            width: 100px;
+            height: 100px;
+            margin-bottom: 20px;
+            opacity: 0.5;
+        }
+
+        .message {
+            padding: 10px 15px;
+            border-radius: 6px;
+            margin-bottom: 15px;
+            display: none;
+        }
+
+        .message.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .message.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .message.warning {
+            background: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeaa7;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .tab-button {
+            padding: 10px 20px;
+            border-radius: 20px;
+            border: none;
+            background: #edf2ff;
+            color: #4c6ef5;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .tab-button:hover {
+            background: #dbe4ff;
+        }
+
+        .tab-button.active {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: #fff;
+            box-shadow: 0 5px 15px rgba(79, 172, 254, 0.4);
+        }
+
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.2s ease;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .sip-stats-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .sip-note {
+            font-size: 12px;
+            color: #888;
+            margin-top: 5px;
+        }
+
+        .sip-plan-table th,
+        .sip-plan-table td {
+            text-align: center;
+        }
+
+        .sip-plan-table td.weekday-amount {
+            font-family: 'Courier New', monospace;
+        }
+
+        .sip-summary {
+            margin-bottom: 20px;
+            padding: 15px 20px;
+            border-radius: 8px;
+            background: #f0f9ff;
+            border-left: 4px solid #4facfe;
+            color: #0c5460;
+        }
+
+        .sip-summary strong {
+            color: #0b7285;
+        }
+
+        .tab-description {
+            margin-bottom: 20px;
+            color: #666;
+        }
+
+        .update-time {
+            color: #999;
+            font-size: 0.85em;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                margin: 10px;
+                border-radius: 8px;
+            }
+
+            .header {
+                padding: 20px;
+            }
+
+            .header h1 {
+                font-size: 2em;
+            }
+
+            .content {
+                padding: 20px;
+            }
+
+            .form-group {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .input-group {
+                min-width: auto;
+            }
+
+            .stats-section {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 15px;
+            }
+
+            .stat-card .value {
+                font-size: 1.5em;
+            }
+        }
+
+        .refresh-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .refresh-btn.loading {
+            opacity: 0.7;
+        }
+
+        .refresh-btn.loading .icon {
+            animation: spin 1s linear infinite;
+        }
+
+        .sort-indicator {
+            font-size: 12px;
+            margin-left: 5px;
+            opacity: 0.5;
+        }
+
+        .sort-indicator.active {
+            opacity: 1;
+            color: #4facfe;
+        }
+
+        th[onclick]:hover {
+            background: #e8f4fd !important;
+        }
+
+        th[onclick] {
+            user-select: none;
+            transition: background-color 0.2s ease;
+        }
+
+        .strategy-signal {
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: bold;
+            text-align: center;
+            white-space: nowrap;
+        }
+
+        .strategy-buy {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .strategy-sell {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .strategy-hold {
+            background: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeaa7;
+        }
+
+        .strategy-neutral {
+            background: #e2e3e5;
+            color: #6c757d;
+            border: 1px solid #d6d8db;
+        }
+
+        .strategy-loading {
+            background: #f8f9fa;
+            color: #6c757d;
+            border: 1px solid #dee2e6;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="content">
+            <div id="message" class="message"></div>
+
+            <div class="tabs">
+                <button class="tab-button active" data-tab="holdings">持有基金</button>
+                <button class="tab-button" data-tab="sip">定投基金</button>
+            </div>
+
+            <div class="tab-content active" data-tab-content="holdings">
+                <!-- 统计信息 -->
+                <div id="statsSection" class="stats-section" style="display: none;">
+                    <div class="stat-card">
+                        <h3>总本金</h3>
+                        <div class="value" id="totalPrincipal">0.00</div>
+                        <div class="unit">元</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>总市值</h3>
+                        <div class="value" id="totalMarketValue">0.00</div>
+                        <div class="unit">元</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>总收益</h3>
+                        <div class="value" id="totalProfit">0.00</div>
+                        <div class="unit">元</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>总收益率</h3>
+                        <div class="value" id="totalProfitRate">0.00</div>
+                        <div class="unit">%</div>
+                    </div>
+                </div>
+
+                <!-- 基金列表 -->
+                <div class="funds-section">
+                    <h2>
+                        基金列表
+                        <div style="display: flex; gap: 10px;">
+                            <button class="btn btn-secondary refresh-btn" id="refreshBtn" style="display: none;">
+                                <span class="icon">🔄</span> 刷新数据
+                            </button>
+                            <button class="btn btn-primary" id="dailyUpdateBtn" style="display: none;" onclick="calculator.manualDailyUpdate()">
+                                <span>📅</span> 手动结算
+                            </button>
+                        </div>
+                    </h2>
+                    
+                    <div class="table-container">
+                        <table id="fundsTable">
+                            <thead>
+                                <tr>
+                                    <th>基金代码</th>
+                                    <th>基金名称</th>
+                                    <th onclick="calculator.sortFunds('principal')" style="cursor: pointer;">
+                                        本金(元) <span id="sort-principal" class="sort-indicator"></span>
+                                    </th>
+                                    <th>最新净值</th>
+                                    <th>估算净值</th>
+                                    <th>涨跌幅</th>
+                                    <th>预估收益(元)</th>
+                                    <th>收益率</th>
+                                    <th onclick="calculator.sortFunds('maStrategy')" style="cursor: pointer;">
+                                        MA策略 <span id="sort-maStrategy" class="sort-indicator"></span>
+                                    </th>
+                                    <th onclick="calculator.sortFunds('maCrossoverStrategy')" style="cursor: pointer;">
+                                        MA穿越策略 <span id="sort-maCrossoverStrategy" class="sort-indicator"></span>
+                                    </th>
+                                    <th onclick="calculator.sortFunds('rsiStrategy')" style="cursor: pointer;">
+                                        RSI策略 <span id="sort-rsiStrategy" class="sort-indicator"></span>
+                                    </th>
+                                    <th onclick="calculator.sortFunds('gridStrategy')" style="cursor: pointer;">
+                                        网格策略 <span id="sort-gridStrategy" class="sort-indicator"></span>
+                                    </th>
+                                    <th>更新时间</th>
+                                    <th>操作</th>
+                                </tr>
+                            </thead>
+                            <tbody id="fundsTableBody">
+                                <tr>
+                                    <td colspan="14" class="empty-state">
+                                        <div>📊</div>
+                                        <p>暂无基金数据，请先添加基金</p>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- 添加基金表单 -->
+                <div class="add-fund-section">
+                    <h2>添加基金</h2>
+                    <form id="addFundForm" class="form-group">
+                        <div class="input-group">
+                            <label for="fundCode">基金代码</label>
+                            <input type="text" id="fundCode" placeholder="如：000001" maxlength="6" pattern="[0-9]{6}" required>
+                        </div>
+                        <div class="input-group">
+                            <label for="principal">本金(元)</label>
+                            <input type="number" id="principal" placeholder="10000" min="0.01" step="0.01" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary" id="addBtn">
+                            <span>➕</span> 添加基金
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="tab-content" data-tab-content="sip">
+                <p class="tab-description">为每只基金设置灵活的工作日定投金额，系统会在每日结算时自动计入本金，并可实时查看定投累计投入与收益情况。</p>
+
+                <div id="sipStatsSection" class="sip-stats-section" style="display: none;">
+                    <div class="stat-card">
+                        <h3>定投基金数</h3>
+                        <div class="value" id="sipPlanCount">0</div>
+                        <div class="unit">只</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>每周定投总额</h3>
+                        <div class="value" id="sipWeeklyTotal">0.00</div>
+                        <div class="unit">元</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>定投本金</h3>
+                        <div class="value" id="sipPrincipalTotal">0.00</div>
+                        <div class="unit">元</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>定投收益</h3>
+                        <div class="value" id="sipProfitTotal">0.00</div>
+                        <div class="unit">元</div>
+                    </div>
+                </div>
+
+                <div id="sipSummary" class="sip-summary" style="display: none;">
+                    每周预计定投 <strong id="sipSummaryWeekly">0.00 元</strong>，约合每月 <strong id="sipSummaryMonthly">0.00 元</strong>，累计自动投入 <strong id="sipSummaryInvested">0.00 元</strong>。
+                </div>
+
+                <div class="add-fund-section">
+                    <h2>新增定投计划</h2>
+                    <form id="addSipForm">
+                        <div class="form-group" style="margin-bottom: 20px;">
+                            <div class="input-group">
+                                <label for="sipFundCode">基金代码</label>
+                                <input type="text" id="sipFundCode" placeholder="如：000001" maxlength="6" pattern="[0-9]{6}" required>
+                            </div>
+                            <div class="input-group">
+                                <label for="sipInitialPrincipal">初始投入(元，可选)</label>
+                                <input type="number" id="sipInitialPrincipal" placeholder="0" min="0" step="0.01">
+                            </div>
+                            <div class="input-group">
+                                <label for="sipWorkdayAmount">工作日定投金额(元)</label>
+                                <input type="number" id="sipWorkdayAmount" placeholder="100" min="0" step="0.01" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary" id="addSipBtn">
+                                <span>➕</span> 添加定投计划
+                            </button>
+                        </div>
+                        <p class="sip-note">系统默认在每个工作日投入相同金额，后续可在编辑中调整。</p>
+                    </form>
+                </div>
+
+                <div class="table-container">
+                    <table id="sipTable" class="sip-plan-table">
+                        <thead>
+                            <tr>
+                                <th>基金代码</th>
+                                <th>基金名称</th>
+                                <th>周一</th>
+                                <th>周二</th>
+                                <th>周三</th>
+                                <th>周四</th>
+                                <th>周五</th>
+                                <th>每周合计</th>
+                                <th>累计定投</th>
+                                <th>最后定投</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody id="sipTableBody">
+                            <tr>
+                                <td colspan="11" class="empty-state">
+                                    <div>📈</div>
+                                    <p>暂无定投计划，添加后可自动执行每日定投</p>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        class FundCalculator {
+            constructor() {
+                this.funds = [];
+                this.sipPlans = [];
+                this.isLoading = false;
+                this.sortConfig = { key: null, direction: 'asc' }; // 排序配置
+                this.historyCache = {}; // 历史数据缓存
+                this.activeTab = localStorage.getItem('fund-calculator-active-tab') || 'holdings';
+                this.loadHistoryCache(); // 加载历史数据缓存
+                this.init();
+            }
+
+            init() {
+                this.loadFromStorage();
+                this.loadSipPlans();
+                this.bindEvents();
+                this.renderFunds();
+                this.renderSipPlans();
+                this.updateStats();
+                this.updateSipStats();
+                this.applyActiveTab();
+                
+                // 检查是否需要进行每日更新
+                this.checkDailyUpdate().then(() => {
+                    // 页面加载时自动刷新数据
+                    if (this.funds.length > 0) {
+                        setTimeout(() => this.refreshAllFunds(), 1000);
+                    }
+                });
+                
+                // 确保定投计划对应的基金存在
+                this.ensureFundsForAllPlans();
+            }
+
+            bindEvents() {
+                const addFundForm = document.getElementById('addFundForm');
+                if (addFundForm) {
+                    addFundForm.addEventListener('submit', (e) => {
+                        e.preventDefault();
+                        this.addFund();
+                    });
+                }
+
+                const refreshBtn = document.getElementById('refreshBtn');
+                if (refreshBtn) {
+                    refreshBtn.addEventListener('click', () => {
+                        this.refreshAllFunds();
+                    });
+                }
+
+                const fundCodeInput = document.getElementById('fundCode');
+                if (fundCodeInput) {
+                    fundCodeInput.addEventListener('input', (e) => {
+                        e.target.value = e.target.value.replace(/[^0-9]/g, '');
+                    });
+                }
+
+                const tabButtons = document.querySelectorAll('.tab-button');
+                tabButtons.forEach((button) => {
+                    button.addEventListener('click', () => {
+                        const targetTab = button.getAttribute('data-tab');
+                        if (targetTab) {
+                            this.switchTab(targetTab);
+                        }
+                    });
+                });
+
+                const addSipForm = document.getElementById('addSipForm');
+                if (addSipForm) {
+                    addSipForm.addEventListener('submit', (e) => {
+                        e.preventDefault();
+                        this.addSipPlan();
+                    });
+                }
+
+                const sipFundCodeInput = document.getElementById('sipFundCode');
+                if (sipFundCodeInput) {
+                    sipFundCodeInput.addEventListener('input', (e) => {
+                        e.target.value = e.target.value.replace(/[^0-9]/g, '');
+                    });
+                }
+            }
+
+            switchTab(tab) {
+                if (this.activeTab === tab) return;
+                this.activeTab = tab;
+                localStorage.setItem('fund-calculator-active-tab', tab);
+                this.applyActiveTab();
+                if (tab === 'sip') {
+                    this.renderSipPlans();
+                    this.updateSipStats();
+                }
+            }
+
+            applyActiveTab() {
+                const tabButtons = document.querySelectorAll('.tab-button');
+                const tabContents = document.querySelectorAll('.tab-content');
+
+                tabButtons.forEach((button) => {
+                    const targetTab = button.getAttribute('data-tab');
+                    if (targetTab === this.activeTab) {
+                        button.classList.add('active');
+                    } else {
+                        button.classList.remove('active');
+                    }
+                });
+
+                tabContents.forEach((content) => {
+                    const contentTab = content.getAttribute('data-tab-content');
+                    if (contentTab === this.activeTab) {
+                        content.classList.add('active');
+                    } else {
+                        content.classList.remove('active');
+                    }
+                });
+            }
+
+            async addFund() {
+                const fundCode = document.getElementById('fundCode').value.trim();
+                const principal = parseFloat(document.getElementById('principal').value);
+
+                if (!fundCode || !principal) {
+                    this.showMessage('请填写完整信息', 'error');
+                    return;
+                }
+
+                if (!/^\d{6}$/.test(fundCode)) {
+                    this.showMessage('基金代码应为6位数字', 'error');
+                    return;
+                }
+
+                if (this.funds.some(fund => fund.code === fundCode)) {
+                    this.showMessage('该基金已存在', 'warning');
+                    return;
+                }
+
+                const addBtn = document.getElementById('addBtn');
+                addBtn.disabled = true;
+                addBtn.innerHTML = '<span>⏳</span> 添加中...';
+
+                try {
+                    const fundData = await this.fetchFundData(fundCode);
+                    
+                    if (!fundData) {
+                        this.showMessage('基金代码无效或获取数据失败', 'error');
+                        return;
+                    }
+
+                    const fund = await this.createFundObject(fundData, principal);
+                    this.funds.push(fund);
+                    this.saveToStorage();
+                    this.renderFunds();
+                    this.updateStats();
+                    
+                    // 清空表单
+                    document.getElementById('addFundForm').reset();
+                    this.showMessage('基金添加成功', 'success');
+                    
+                } catch (error) {
+                    console.error('添加基金失败:', error);
+                    this.showMessage('添加基金失败', 'error');
+                } finally {
+                    addBtn.disabled = false;
+                    addBtn.innerHTML = '<span>➕</span> 添加基金';
+                }
+            }
+
+            async addSipPlan() {
+                const fundCode = document.getElementById('sipFundCode').value.trim();
+                const initialPrincipal = parseFloat(document.getElementById('sipInitialPrincipal').value) || 0;
+
+                if (!/^\d{6}$/.test(fundCode)) {
+                    this.showMessage('基金代码应为6位数字', 'error');
+                    return;
+                }
+
+                if (this.sipPlans.some(plan => plan.code === fundCode)) {
+                    this.showMessage('该基金已存在定投计划', 'warning');
+                    return;
+                }
+
+                const workdayAmountInput = document.getElementById('sipWorkdayAmount');
+                const workdayAmount = workdayAmountInput ? parseFloat(workdayAmountInput.value) || 0 : 0;
+
+                if (workdayAmount === 0 && initialPrincipal === 0) {
+                    this.showMessage('请至少设置工作日定投金额或初始投入', 'warning');
+                    return;
+                }
+
+                const addSipBtn = document.getElementById('addSipBtn');
+                if (addSipBtn) {
+                    addSipBtn.disabled = true;
+                    addSipBtn.innerHTML = '<span>⏳</span> 创建中...';
+                }
+
+                try {
+                    const fundData = await this.fetchFundData(fundCode);
+                    if (!fundData) {
+                        this.showMessage('基金代码无效或获取数据失败', 'error');
+                        return;
+                    }
+
+                    const plan = {
+                        id: Date.now().toString(),
+                        code: fundData.fundcode,
+                        name: fundData.name,
+                        uniformAmount: parseFloat(workdayAmount.toFixed(2)),
+                        amounts: this.createUniformAmounts(workdayAmount),
+                        totalInvested: 0,
+                        lastContributionDate: null,
+                        createdAt: new Date().toISOString(),
+                        initialPrincipal: parseFloat(initialPrincipal.toFixed(2)),
+                        initialPrincipalApplied: false,
+                    };
+
+                    this.sipPlans.push(plan);
+                    this.saveSipPlansToStorage();
+
+                    await this.applySipInitialInvestment(fundData, initialPrincipal, plan);
+
+                    this.renderSipPlans();
+                    this.updateSipStats();
+                    this.renderFunds();
+                    this.updateStats();
+
+                    const form = document.getElementById('addSipForm');
+                    if (form) {
+                        form.reset();
+                    }
+
+                    this.showMessage('定投计划创建成功', 'success');
+                    this.switchTab('sip');
+                } catch (error) {
+                    console.error('添加定投计划失败:', error);
+                    this.showMessage('添加定投计划失败', 'error');
+                } finally {
+                    if (addSipBtn) {
+                        addSipBtn.disabled = false;
+                        addSipBtn.innerHTML = '<span>➕</span> 添加定投计划';
+                    }
+                }
+            }
+
+            async applySipInitialInvestment(fundData, initialPrincipal, plan) {
+                const amount = parseFloat(initialPrincipal) || 0;
+                let fund = this.funds.find(f => f.code === fundData.fundcode);
+
+                try {
+                    if (!fund) {
+                        const newFund = await this.createFundObject(fundData, amount);
+                        this.funds.push(newFund);
+                        this.saveToStorage();
+                        plan.initialPrincipalApplied = true;
+                        this.saveSipPlansToStorage();
+                        return;
+                    }
+
+                    if (!plan.initialPrincipalApplied && amount > 0) {
+                        const updatedFund = await this.createFundObject(fundData, fund.principal + amount);
+                        updatedFund.id = fund.id;
+                        const index = this.funds.findIndex(f => f.id === fund.id);
+                        if (index !== -1) {
+                            this.funds[index] = updatedFund;
+                            this.saveToStorage();
+                        }
+                        plan.initialPrincipalApplied = true;
+                        this.saveSipPlansToStorage();
+                    } else if (!plan.initialPrincipalApplied) {
+                        plan.initialPrincipalApplied = true;
+                        this.saveSipPlansToStorage();
+                    }
+                } catch (error) {
+                    console.error('应用定投初始投入失败:', error);
+                }
+            }
+
+            async ensureFundsForAllPlans() {
+                if (!this.sipPlans || this.sipPlans.length === 0) return;
+
+                let fundsChanged = false;
+                for (const plan of this.sipPlans) {
+                    if (!plan || !plan.code) {
+                        console.warn('发现缺少基金代码的定投计划，已忽略', plan);
+                        continue;
+                    }
+                    this.ensurePlanAmounts(plan);
+                    const fund = this.funds.find(f => f.code === plan.code);
+                    const initialPrincipal = parseFloat(plan.initialPrincipal || 0);
+                    const totalInvested = parseFloat(plan.totalInvested || 0);
+
+                    try {
+                        if (!fund) {
+                            const fundData = await this.fetchFundData(plan.code);
+                            if (fundData) {
+                                const basePrincipal = parseFloat((initialPrincipal + totalInvested).toFixed(2));
+                                const newFund = await this.createFundObject(fundData, basePrincipal);
+                                this.funds.push(newFund);
+                                plan.initialPrincipalApplied = true;
+                                fundsChanged = true;
+                            }
+                        } else if (!plan.initialPrincipalApplied && initialPrincipal > 0) {
+                            const fundData = await this.fetchFundData(plan.code);
+                            if (fundData) {
+                                const updatedFund = await this.createFundObject(fundData, fund.principal + initialPrincipal);
+                                updatedFund.id = fund.id;
+                                const index = this.funds.findIndex(f => f.id === fund.id);
+                                if (index !== -1) {
+                                    this.funds[index] = updatedFund;
+                                    fundsChanged = true;
+                                }
+                                plan.initialPrincipalApplied = true;
+                            }
+                        }
+                    } catch (error) {
+                        console.error('同步定投基金数据失败:', error);
+                    }
+                }
+
+                if (fundsChanged) {
+                    this.saveToStorage();
+                    this.renderFunds();
+                    this.updateStats();
+                }
+                this.saveSipPlansToStorage();
+                this.updateSipStats();
+            }
+
+            renderSipPlans() {
+                const tbody = document.getElementById('sipTableBody');
+                if (!tbody) return;
+
+                if (!this.sipPlans || this.sipPlans.length === 0) {
+                    tbody.innerHTML = `
+                        <tr>
+                            <td colspan="11" class="empty-state">
+                                <div>📈</div>
+                                <p>暂无定投计划，添加后可自动执行每日定投</p>
+                            </td>
+                        </tr>
+                    `;
+                    return;
+                }
+
+                const weekdayOrder = this.getWeekdayKeys();
+                tbody.innerHTML = this.sipPlans.map((plan) => {
+                    this.ensurePlanAmounts(plan);
+                    const weeklyTotal = this.calculatePlanWeeklyTotal(plan);
+                    const totalInvested = parseFloat(plan.totalInvested || 0);
+                    const lastContributionDate = plan.lastContributionDate || '-';
+
+                    const weekdayCells = weekdayOrder.map((key) => {
+                        const value = this.getPlanAmountForKey(plan, key);
+                        return `<td class="weekday-amount">${this.formatPlanAmount(value)}</td>`;
+                    }).join('');
+
+                    return `
+                        <tr>
+                            <td class="fund-code">${plan.code}</td>
+                            <td class="fund-name" title="${plan.name}">${plan.name}</td>
+                            ${weekdayCells}
+                            <td class="number">${this.formatCurrency(weeklyTotal)}</td>
+                            <td class="number">${this.formatCurrency(totalInvested)}</td>
+                            <td class="update-time">${lastContributionDate}</td>
+                            <td>
+                                <button class="btn btn-warning" onclick="calculator.editSipPlan('${plan.id}')" title="编辑定投金额">✏️</button>
+                                <button class="btn btn-danger" onclick="calculator.deleteSipPlan('${plan.id}')" title="删除定投计划">🗑️</button>
+                            </td>
+                        </tr>
+                    `;
+                }).join('');
+            }
+
+            updateSipStats() {
+                const statsSection = document.getElementById('sipStatsSection');
+                const summary = document.getElementById('sipSummary');
+                if (!statsSection || !summary) {
+                    return;
+                }
+
+                if (!this.sipPlans || this.sipPlans.length === 0) {
+                    statsSection.style.display = 'none';
+                    summary.style.display = 'none';
+                    return;
+                }
+
+                const planCount = this.sipPlans.length;
+                const weeklyTotal = this.sipPlans.reduce((sum, plan) => sum + this.calculatePlanWeeklyTotal(plan), 0);
+                const totalInvested = this.sipPlans.reduce((sum, plan) => sum + (parseFloat(plan.totalInvested || 0)), 0);
+                const planCodes = new Set(this.sipPlans.map(plan => plan.code));
+                const relatedFunds = this.funds.filter(fund => planCodes.has(fund.code));
+                const sipPrincipalTotal = relatedFunds.reduce((sum, fund) => sum + fund.principal, 0);
+                const sipProfitTotal = relatedFunds.reduce((sum, fund) => sum + fund.profit, 0);
+
+                document.getElementById('sipPlanCount').textContent = planCount.toString();
+                document.getElementById('sipWeeklyTotal').textContent = this.formatCurrency(weeklyTotal);
+                document.getElementById('sipPrincipalTotal').textContent = this.formatCurrency(sipPrincipalTotal);
+                const profitElement = document.getElementById('sipProfitTotal');
+                const profitClass = sipProfitTotal > 0 ? 'positive' : sipProfitTotal < 0 ? 'negative' : 'neutral';
+                profitElement.textContent = this.formatCurrency(sipProfitTotal);
+                profitElement.className = `value ${profitClass}`;
+
+                document.getElementById('sipSummaryWeekly').textContent = `${this.formatCurrency(weeklyTotal)} 元`;
+                document.getElementById('sipSummaryMonthly').textContent = `${this.formatCurrency(weeklyTotal * 4)} 元`;
+                document.getElementById('sipSummaryInvested').textContent = `${this.formatCurrency(totalInvested)} 元`;
+
+                statsSection.style.display = 'grid';
+                summary.style.display = 'block';
+            }
+
+            calculatePlanWeeklyTotal(plan) {
+                if (!plan) return 0;
+                this.ensurePlanAmounts(plan);
+                if (typeof plan.uniformAmount === 'number') {
+                    return parseFloat((plan.uniformAmount * this.getWeekdayKeys().length).toFixed(2));
+                }
+                return this.getWeekdayKeys().reduce((sum, key) => {
+                    const value = this.getPlanAmountForKey(plan, key);
+                    return sum + (isNaN(value) ? 0 : value);
+                }, 0);
+            }
+
+            formatPlanAmount(value) {
+                const amount = parseFloat(value) || 0;
+                return amount > 0 ? amount.toFixed(2) : '-';
+            }
+
+            formatCurrency(value) {
+                const amount = parseFloat(value) || 0;
+                return amount.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+            }
+
+            formatSignedCurrency(value) {
+                const amount = parseFloat(value) || 0;
+                const sign = amount > 0 ? '+' : amount < 0 ? '-' : '';
+                const absolute = Math.abs(amount);
+                const formatted = absolute.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                return `${sign}${formatted}`;
+            }
+
+            async editSipPlan(id) {
+                const plan = this.sipPlans.find(item => item.id === id);
+                if (!plan) return;
+
+                const updatedData = await this.showSipEditDialog(plan);
+                if (!updatedData) return;
+
+                if (typeof updatedData.uniformAmount === 'number') {
+                    plan.uniformAmount = parseFloat(updatedData.uniformAmount.toFixed(2));
+                    plan.amounts = this.createUniformAmounts(plan.uniformAmount);
+                }
+                if (typeof updatedData.initialPrincipal === 'number') {
+                    const difference = parseFloat(updatedData.initialPrincipal.toFixed(2)) - (parseFloat(plan.initialPrincipal || 0));
+                    plan.initialPrincipal = parseFloat(updatedData.initialPrincipal.toFixed(2));
+                    if (difference !== 0) {
+                        plan.initialPrincipalApplied = false;
+                        await this.ensureFundsForAllPlans();
+                    }
+                }
+                this.saveSipPlansToStorage();
+                this.renderSipPlans();
+                this.updateSipStats();
+                this.showMessage('定投计划已更新', 'success');
+            }
+
+            showSipEditDialog(plan) {
+                return new Promise((resolve) => {
+                    const modal = document.createElement('div');
+                    modal.style.cssText = `
+                        position: fixed;
+                        top: 0;
+                        left: 0;
+                        width: 100%;
+                        height: 100%;
+                        background: rgba(0, 0, 0, 0.5);
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        z-index: 10000;
+                    `;
+
+                    const dialog = document.createElement('div');
+                    dialog.style.cssText = `
+                        background: white;
+                        padding: 30px;
+                        border-radius: 12px;
+                        max-width: 560px;
+                        width: 90%;
+                        margin: 20px;
+                        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+                    `;
+
+                    this.ensurePlanAmounts(plan);
+                    const uniformAmount = typeof plan.uniformAmount === 'number' ? plan.uniformAmount : this.getPlanAmountForKey(plan, 'mon');
+                    const initialPrincipal = parseFloat(plan.initialPrincipal || 0);
+
+                    dialog.innerHTML = `
+                        <h3 style="margin: 0 0 15px 0; color: #333; font-size: 1.2em;">✏️ 编辑定投计划</h3>
+                        <p style="margin: 0 0 15px 0; color: #666;">
+                            <strong>${plan.name}</strong> (${plan.code})
+                        </p>
+                        <div style="display: flex; flex-direction: column; gap: 12px;">
+                            <div>
+                                <label style="display: block; margin-bottom: 6px; font-weight: 500; color: #555;">工作日定投金额(元)</label>
+                                <input type="number" id="editSip-uniform" value="${uniformAmount.toFixed(2)}" min="0" step="0.01" style="width: 100%; padding: 8px 10px; border: 1px solid #e1e5e9; border-radius: 6px;">
+                                <p class="sip-note" style="margin-top: 6px;">每天将投入相同金额，修改后会同步应用到星期一至星期五。</p>
+                            </div>
+                        </div>
+                        <div style="margin-top: 16px;">
+                            <label style="display: block; margin-bottom: 6px; font-weight: 500; color: #555;">初始投入(元，可选)</label>
+                            <input type="number" id="editSip-initial" value="${initialPrincipal.toFixed(2)}" min="0" step="0.01" style="width: 100%; padding: 8px 10px; border: 1px solid #e1e5e9; border-radius: 6px;">
+                            <p class="sip-note" style="margin-top: 8px;">修改初始投入后将在下次同步时一次性补齐差额。</p>
+                        </div>
+                        <div style="margin-top: 20px; text-align: right; display: flex; justify-content: flex-end; gap: 10px;">
+                            <button id="cancelSipEdit" style="padding: 8px 16px; border: 1px solid #ddd; background: white; border-radius: 6px; cursor: pointer;">取消</button>
+                            <button id="confirmSipEdit" style="padding: 8px 16px; border: none; background: #4facfe; color: white; border-radius: 6px; cursor: pointer;">保存</button>
+                        </div>
+                    `;
+
+                    modal.appendChild(dialog);
+                    document.body.appendChild(modal);
+
+                    const cleanup = () => {
+                        if (document.body.contains(modal)) {
+                            document.body.removeChild(modal);
+                        }
+                    };
+
+                    document.getElementById('confirmSipEdit').onclick = () => {
+                        const uniformInput = document.getElementById('editSip-uniform');
+                        const uniformValue = parseFloat(uniformInput.value) || 0;
+                        const initialInput = document.getElementById('editSip-initial');
+                        const updatedInitial = parseFloat(initialInput.value) || 0;
+
+                        if (uniformValue === 0 && updatedInitial === 0) {
+                            this.showMessage('请设置工作日定投金额或初始投入', 'warning');
+                            return;
+                        }
+
+                        cleanup();
+                        resolve({ uniformAmount: uniformValue, initialPrincipal: updatedInitial });
+                    };
+
+                    document.getElementById('cancelSipEdit').onclick = () => {
+                        cleanup();
+                        resolve(null);
+                    };
+
+                    modal.onclick = (event) => {
+                        if (event.target === modal) {
+                            cleanup();
+                            resolve(null);
+                        }
+                    };
+
+                    document.addEventListener('keydown', function escHandler(e) {
+                        if (e.key === 'Escape') {
+                            cleanup();
+                            resolve(null);
+                            document.removeEventListener('keydown', escHandler);
+                        }
+                    });
+                });
+            }
+
+            deleteSipPlan(id) {
+                const plan = this.sipPlans.find(item => item.id === id);
+                if (!plan) return;
+
+                if (confirm(`确定删除 ${plan.name} (${plan.code}) 的定投计划吗？`)) {
+                    this.sipPlans = this.sipPlans.filter(item => item.id !== id);
+                    this.saveSipPlansToStorage();
+                    this.renderSipPlans();
+                    this.updateSipStats();
+                    this.renderFunds();
+                    this.updateStats();
+                    this.showMessage('定投计划已删除', 'success');
+                }
+            }
+
+            sanitizeJsonpgz(text) {
+                if (!text) return null;
+                const trimmed = text.trim();
+                if (!trimmed) return null;
+
+                const prefix = 'jsonpgz(';
+                const suffix = ');';
+
+                if (trimmed.startsWith(prefix) && trimmed.endsWith(');')) {
+                    return trimmed.substring(prefix.length, trimmed.length - suffix.length);
+                }
+
+                const match = trimmed.match(/jsonpgz\s*\(\s*(\{[\s\S]*\})\s*\)\s*;?/);
+                if (match && match[1]) {
+                    return match[1];
+                }
+
+                    /** fallback attempt: strip leading/trailing wrapper */
+                    return trimmed.replace(/^jsonpgz\s*\(\s*/, '').replace(/\s*\)\s*;?\s*$/, '');
+            }
+
+            async fetchFundData(fundCode) {
+                if (!fundCode || typeof fundCode !== 'string') {
+                    console.warn('fetchFundData: invalid fund code', fundCode);
+                    return null;
+                }
+                const normalizedCode = fundCode.trim();
+                if (!/^\d{6}$/.test(normalizedCode)) {
+                    console.warn('fetchFundData: unsupported fund code format', normalizedCode);
+                    return null;
+                }
+
+                try {
+                    // 优先使用代理服务器
+                    const proxyUrl = `/api/fund/${normalizedCode}`;
+                    
+                    const response = await fetch(proxyUrl);
+                    const text = await response.text();
+                    
+                    const jsonString = this.sanitizeJsonpgz(text);
+                    if (jsonString) {
+                        return JSON.parse(jsonString);
+                    }
+                    
+                    // 如果代理失败，尝试直接请求
+                    console.log('代理请求失败，尝试直接请求...');
+                    const directResponse = await fetch(`https://fundgz.1234567.com.cn/js/${normalizedCode}.js`);
+                    const directText = await directResponse.text();
+                    
+                    const directJsonString = this.sanitizeJsonpgz(directText);
+                    if (directJsonString) {
+                        return JSON.parse(directJsonString);
+                    }
+
+                    const fallbackData = await this.fetchFundDataFromMobileApi(normalizedCode);
+                    if (fallbackData) {
+                        return fallbackData;
+                    }
+
+                    return null;
+                } catch (error) {
+                    console.error(`获取基金 ${normalizedCode} 数据失败:`, error);
+                    const fallbackData = await this.fetchFundDataFromMobileApi(normalizedCode);
+                    if (fallbackData) {
+                        return fallbackData;
+                    }
+                    return this.getMockFundData(normalizedCode);
+                }
+            }
+
+            async fetchFundDataFromMobileApi(fundCode) {
+                const params = new URLSearchParams({
+                    FCODE: fundCode,
+                    pageIndex: '1',
+                    pageSize: '20',
+                    appType: 'ttjj',
+                    product: 'EFund',
+                    plat: 'Iphone',
+                    version: '6.3.8',
+                    deviceid: '00000000-0000-0000-0000-000000000000',
+                });
+
+                try {
+                    const url = `https://fundmobapi.eastmoney.com/FundMNewApi/FundMNFInfo?${params.toString()}`;
+                    const response = await fetch(url);
+                    const result = await response.json();
+
+                    if (result && Number(result.ErrCode) === 0 && result.Data) {
+                        const data = result.Data;
+                        const nav = data.NAV ?? data.DWJZ ?? data.NAVCHGRT ?? 0;
+                        const estimate = data.GSZ ?? data.NAV ?? data.DWJZ ?? nav ?? 0;
+                        const changeRate = data.GSZZL ?? data.NAVCHGRT ?? 0;
+                        const updateTime = data.GZTIME ?? data.PDATE ?? data.ENDDATE ?? '';
+
+                        return {
+                            fundcode: data.FCODE || fundCode,
+                            name: data.SHORTNAME || data.FDSNAME || data.FCODE || fundCode,
+                            dwjz: nav !== undefined ? String(nav) : '0',
+                            gsz: estimate !== undefined ? String(estimate) : '0',
+                            gszzl: changeRate !== undefined ? String(changeRate) : '0',
+                            gztime: updateTime || new Date().toISOString().slice(0, 19).replace('T', ' '),
+                        };
+                    }
+                } catch (error) {
+                    console.error(`移动端接口获取基金 ${fundCode} 数据失败:`, error);
+                }
+
+                return null;
+            }
+
+            getMockFundData(fundCode) {
+                // 模拟数据，实际使用时应该删除
+                const mockData = {
+                    '000001': { fundcode: '000001', name: '华夏成长混合', dwjz: '1.2345', gsz: '1.2456', gszzl: '0.90', gztime: '2024-01-15 15:00' },
+                    '110022': { fundcode: '110022', name: '易方达消费行业股票', dwjz: '3.4567', gsz: '3.4321', gszzl: '-0.71', gztime: '2024-01-15 15:00' },
+                    '161725': { fundcode: '161725', name: '招商中证白酒指数分级', dwjz: '0.8765', gsz: '0.8834', gszzl: '0.79', gztime: '2024-01-15 15:00' }
+                };
+                
+                return mockData[fundCode] || null;
+            }
+
+            // 获取基金历史净值数据
+            async fetchHistoryData(fundCode, days = 120) {
+                if (!fundCode) return [];
+                const cacheEntry = this.historyCache[fundCode];
+                console.log(cacheEntry)
+                if (cacheEntry && Array.isArray(cacheEntry.data) && cacheEntry.data.length > 0) {
+                    return cacheEntry.data;
+                }
+
+                try {
+                    const history = await this.fetchHistoryDataFromApi(fundCode, days);
+                    if (history && history.length > 0) {
+                        this.historyCache[fundCode] = {
+                            data: history,
+                            updatedAt: Date.now(),
+                            source: 'api'
+                        };
+                        this.saveHistoryCache();
+                        return history;
+                    }
+                } catch (error) {
+                    console.error(`获取${fundCode}历史数据失败:`, error);
+                }
+
+                const fallbackHistory = this.generateMockHistory(fundCode, days);
+                this.historyCache[fundCode] = {
+                    data: fallbackHistory,
+                    updatedAt: Date.now(),
+                    source: 'mock'
+                };
+                
+                this.saveHistoryCache();
+                return fallbackHistory;
+            }
+
+            async fetchHistoryDataFromApi(fundCode, days = 120) {
+                const normalizedCode = (fundCode || '').trim();
+                if (!/^\d{6}$/.test(normalizedCode)) {
+                    return [];
+                }
+
+                const limit = Number.isFinite(days) && days > 0 ? days : 120;
+                const response = await fetch(`/api/fund/history/${normalizedCode}?days=${limit}`);
+                if (!response.ok) {
+                    throw new Error(`历史数据请求失败: ${response.status}`);
+                }
+                const result = await response.json();
+                const list = (result && (result.Datas || result.datas || result.data)) || [];
+                if (!Array.isArray(list) || list.length === 0) {
+                    return [];
+                }
+
+                const history = list
+                    .map(item => {
+                        const date = item.FSRQ || item.PDATE || item.GZTIME || item.date;
+                        const navValue = item.DWJZ ?? item.NAV ?? item.dwjz ?? item.nav;
+                        const parsedNav = parseFloat(navValue);
+                        if (!date || Number.isNaN(parsedNav)) {
+                            return null;
+                        }
+                        return {
+                            date,
+                            nav: parseFloat(parsedNav.toFixed(4))
+                        };
+                    })
+                    .filter(Boolean)
+                    .sort((a, b) => new Date(a.date) - new Date(b.date));
+
+                const trimmed = history.slice(-limit);
+                return trimmed;
+            }
+
+            // 使用基金代码生成伪随机种子
+            seededRandom(seed) {
+                const x = Math.sin(seed++) * 10000;
+                return x - Math.floor(x);
+            }
+
+            // 生成模拟历史数据（使用基金代码作为种子，确保稳定性）
+            generateMockHistory(fundCode, days) {
+                const history = [];
+                // 使用基金代码的数字作为种子，确保同一基金生成相同的历史数据
+                let seed = parseInt(fundCode, 10) || 123456;
+                
+                // 基础价格基于种子生成（确保稳定）
+                const basePrice = 0.5 + this.seededRandom(seed) * 2; // 0.5-2.5
+                let currentPrice = basePrice;
+                
+                for (let i = days; i >= 0; i--) {
+                    const date = new Date();
+                    date.setDate(date.getDate() - i);
+                    
+                    // 使用种子生成确定性的价格波动 (-3% 到 +3%)
+                    seed++;
+                    const change = (this.seededRandom(seed) - 0.5) * 0.06;
+                    currentPrice = currentPrice * (1 + change);
+                    
+                    history.push({
+                        date: date.toISOString().split('T')[0],
+                        nav: parseFloat(currentPrice.toFixed(4))
+                    });
+                }
+                
+                return history;
+            }
+
+            // 计算移动平均线
+            calculateMA(prices, period) {
+                if (prices.length < period) return null;
+                const sum = prices.slice(-period).reduce((a, b) => a + b, 0);
+                return sum / period;
+            }
+
+            // 计算RSI指标
+            calculateRSI(prices, period = 14) {
+                if (prices.length < period + 1) return null;
+
+                // 使用 Wilder 平滑（也称为 RMA）计算 RSI
+                let gainSum = 0;
+                let lossSum = 0;
+
+                for (let i = 1; i <= period; i++) {
+                    const change = prices[i] - prices[i - 1];
+                    if (change > 0) {
+                        gainSum += change;
+                    } else {
+                        lossSum += Math.abs(change);
+                    }
+                }
+
+                let avgGain = gainSum / period;
+                let avgLoss = lossSum / period;
+
+                for (let i = period + 1; i < prices.length; i++) {
+                    const change = prices[i] - prices[i - 1];
+                    const gain = change > 0 ? change : 0;
+                    const loss = change < 0 ? Math.abs(change) : 0;
+
+                    avgGain = ((avgGain * (period - 1)) + gain) / period;
+                    avgLoss = ((avgLoss * (period - 1)) + loss) / period;
+                }
+
+                if (avgLoss === 0) return 100;
+
+                const rs = avgGain / avgLoss;
+                return 100 - (100 / (1 + rs));
+            }
+
+            // MA策略分析
+            analyzeMAStrategy(history) {
+                if (!history || history.length < 20) {
+                    return { signal: 'loading', text: '数据不足' };
+                }
+                
+                const prices = history.map(h => h.nav);
+                const ma5 = this.calculateMA(prices, 5);
+                const ma20 = this.calculateMA(prices, 20);
+                
+                if (!ma5 || !ma20) {
+                    return { signal: 'loading', text: '计算中' };
+                }
+                
+                const currentPrice = prices[prices.length - 1];
+                
+                if (ma5 > ma20 && currentPrice > ma5) {
+                    return { signal: 'buy', text: '买入信号' };
+                } else if (ma5 < ma20 && currentPrice < ma5) {
+                    return { signal: 'sell', text: '卖出信号' };
+                } else {
+                    return { signal: 'hold', text: '持有观望' };
+                }
+            }
+
+            analyzeMACrossoverStrategy(history) {
+                if (!history || history.length < 21) {
+                    return { signal: 'loading', text: '数据不足' };
+                }
+
+                const prices = history.map(h => h.nav);
+                const currentMA5 = this.calculateMA(prices, 5);
+                const currentMA20 = this.calculateMA(prices, 20);
+
+                const previousPrices = prices.slice(0, -1);
+                const previousMA5 = this.calculateMA(previousPrices, 5);
+                const previousMA20 = this.calculateMA(previousPrices, 20);
+
+                if (currentMA5 === null || currentMA20 === null || previousMA5 === null || previousMA20 === null) {
+                    return { signal: 'loading', text: '计算中' };
+                }
+
+                const crossedUp = previousMA5 <= previousMA20 && currentMA5 > currentMA20;
+                const crossedDown = previousMA5 >= previousMA20 && currentMA5 < currentMA20;
+
+                if (crossedUp) {
+                    return { signal: 'buy', text: '金叉' };
+                }
+                if (crossedDown) {
+                    return { signal: 'sell', text: '死叉' };
+                }
+                return { signal: 'neutral', text: '未穿越' };
+            }
+
+            // RSI策略分析
+            analyzeRSIStrategy(history) {
+                if (!history || history.length < 20) {
+                    return { signal: 'loading', text: '数据不足' };
+                }
+                
+                const prices = history.map(h => h.nav);
+                const rsi = this.calculateRSI(prices);
+                
+                if (rsi === null) {
+                    return { signal: 'loading', text: '计算中' };
+                }
+                
+                if (rsi < 30) {
+                    return { signal: 'buy', text: `超卖 ${rsi.toFixed(1)}` };
+                } else if (rsi > 70) {
+                    return { signal: 'sell', text: `超买 ${rsi.toFixed(1)}` };
+                } else {
+                    return { signal: 'neutral', text: `中性 ${rsi.toFixed(1)}` };
+                }
+            }
+
+            // 网格策略分析
+            analyzeGridStrategy(history, currentPrice) {
+                if (!history || history.length < 10) {
+                    return { signal: 'loading', text: '数据不足' };
+                }
+
+                const lookbackWindow = 60;
+                const recentHistory = history.slice(-lookbackWindow);
+                const prices = recentHistory.map(h => h.nav);
+                const maxPrice = Math.max(...prices);
+                const minPrice = Math.min(...prices);
+                const priceRange = maxPrice - minPrice;
+
+                if (priceRange === 0) {
+                    return { signal: 'neutral', text: '价格稳定' };
+                }
+
+                // 计算最近价格波动率，过滤过于平稳的行情
+                const returns = [];
+                for (let i = 1; i < prices.length; i++) {
+                    const prev = prices[i - 1];
+                    if (prev > 0) {
+                        returns.push((prices[i] - prev) / prev);
+                    }
+                }
+                const meanReturn = returns.reduce((sum, r) => sum + r, 0) / (returns.length || 1);
+                const variance = returns.reduce((sum, r) => sum + Math.pow(r - meanReturn, 2), 0) / (returns.length || 1);
+                const volatility = Math.sqrt(variance);
+
+                if (volatility < 0.003) {
+                    return { signal: 'neutral', text: '波动过低' };
+                }
+
+                const position = (currentPrice - minPrice) / priceRange;
+
+                if (position < 0.3) {
+                    return { signal: 'buy', text: '低位加仓' };
+                } else if (position > 0.7) {
+                    return { signal: 'sell', text: '高位减仓' };
+                } else {
+                    return { signal: 'hold', text: '中位持有' };
+                }
+            }
+
+            async createFundObject(fundData, principal) {
+                const principalValue = typeof principal === 'number' ? principal : parseFloat(principal) || 0;
+                const currentValue = parseFloat(fundData.dwjz) || 0;
+                const estimateValue = parseFloat(fundData.gsz) || currentValue;
+                const changeRate = parseFloat(fundData.gszzl) || 0;
+                
+                const shares = currentValue > 0 ? principalValue / currentValue : 0;
+                const currentMarketValue = shares * estimateValue;
+                const profit = currentMarketValue - principalValue;
+                const profitRate = principalValue > 0 ? (profit / principalValue) * 100 : 0;
+
+                // 获取历史数据并计算策略
+                let maStrategy = { signal: 'loading', text: '计算中' };
+                let maCrossoverStrategy = { signal: 'loading', text: '计算中' };
+                let rsiStrategy = { signal: 'loading', text: '计算中' };
+                let gridStrategy = { signal: 'loading', text: '计算中' };
+
+                try {
+                    const history = await this.fetchHistoryData(fundData.fundcode);
+                    maStrategy = this.analyzeMAStrategy(history);
+                    maCrossoverStrategy = this.analyzeMACrossoverStrategy(history);
+                    rsiStrategy = this.analyzeRSIStrategy(history);
+                    gridStrategy = this.analyzeGridStrategy(history, estimateValue);
+                } catch (error) {
+                    console.error('策略计算失败:', error);
+                }
+
+                return {
+                    id: Date.now().toString(),
+                    code: fundData.fundcode,
+                    name: fundData.name,
+                    principal: parseFloat(principalValue.toFixed(2)),
+                    currentValue,
+                    estimateValue,
+                    changeRate,
+                    profit: parseFloat(profit.toFixed(2)),
+                    profitRate: parseFloat(profitRate.toFixed(2)),
+                    updateTime: fundData.gztime,
+                    loading: false,
+                    maStrategy,
+                    maCrossoverStrategy,
+                    rsiStrategy,
+                    gridStrategy
+                };
+            }
+
+            async editFund(id) {
+                const fund = this.funds.find(f => f.id === id);
+                if (!fund) return;
+
+                const newPrincipal = await this.showEditDialog(fund);
+                
+                if (newPrincipal !== null && newPrincipal > 0) {
+                    const editBtn = event.target.closest('button');
+                    const originalHtml = editBtn.innerHTML;
+                    editBtn.disabled = true;
+                    editBtn.innerHTML = '⏳';
+
+                    try {
+                        // 获取最新的基金数据
+                        const fundData = await this.fetchFundData(fund.code);
+                        if (fundData) {
+                            // 使用新本金创建更新后的基金对象
+                            const updatedFund = await this.createFundObject(fundData, newPrincipal);
+                            updatedFund.id = fund.id; // 保持原有ID
+                            
+                            // 更新基金列表
+                            const index = this.funds.findIndex(f => f.id === id);
+                            if (index !== -1) {
+                                this.funds[index] = updatedFund;
+                            }
+                            
+                            this.saveToStorage();
+                            this.renderFunds();
+                            this.updateStats();
+                            this.showMessage('编辑成功', 'success');
+                        } else {
+                            this.showMessage('更新基金数据失败', 'error');
+                        }
+                    } catch (error) {
+                        console.error('编辑基金失败:', error);
+                        this.showMessage('编辑失败', 'error');
+                    } finally {
+                        if (editBtn) {
+                            editBtn.disabled = false;
+                            editBtn.innerHTML = originalHtml;
+                        }
+                    }
+                }
+            }
+
+            showEditDialog(fund) {
+                return new Promise((resolve) => {
+                    const modal = document.createElement('div');
+                    modal.style.cssText = `
+                        position: fixed;
+                        top: 0;
+                        left: 0;
+                        width: 100%;
+                        height: 100%;
+                        background: rgba(0, 0, 0, 0.5);
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        z-index: 10000;
+                    `;
+
+                    const dialog = document.createElement('div');
+                    dialog.style.cssText = `
+                        background: white;
+                        padding: 30px;
+                        border-radius: 12px;
+                        max-width: 500px;
+                        width: 90%;
+                        margin: 20px;
+                        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+                    `;
+
+                    dialog.innerHTML = `
+                        <h3 style="margin: 0 0 15px 0; color: #333; font-size: 1.2em;">✏️ 编辑基金</h3>
+                        <div style="margin-bottom: 20px;">
+                            <p style="margin: 0 0 10px 0; color: #666;">
+                                <strong>${fund.name}</strong> (${fund.code})
+                            </p>
+                            <div style="margin-top: 15px;">
+                                <label style="display: block; margin-bottom: 5px; font-weight: 500; color: #555;">
+                                    本金(元)
+                                </label>
+                                <input 
+                                    type="number" 
+                                    id="editPrincipal" 
+                                    value="${fund.principal}"
+                                    min="0.01"
+                                    step="0.01"
+                                    style="width: 100%; padding: 10px 12px; border: 2px solid #e1e5e9; border-radius: 6px; font-size: 14px;"
+                                    required
+                                />
+                            </div>
+                            <div style="margin-top: 10px; padding: 10px; background: #f8f9fa; border-radius: 4px; font-size: 12px; color: #666;">
+                                <div>当前本金: <strong>${fund.principal.toLocaleString()}</strong> 元</div>
+                                <div>当前收益: <strong style="color: ${fund.profit > 0 ? '#28a745' : fund.profit < 0 ? '#dc3545' : '#6c757d'}">${fund.profit > 0 ? '+' : ''}${fund.profit.toLocaleString()}</strong> 元</div>
+                            </div>
+                        </div>
+                        <div style="display: flex; gap: 10px; justify-content: flex-end;">
+                            <button id="cancelEdit" style="padding: 8px 16px; border: 1px solid #ddd; background: white; border-radius: 6px; cursor: pointer;">
+                                取消
+                            </button>
+                            <button id="confirmEdit" style="padding: 8px 16px; border: none; background: #4facfe; color: white; border-radius: 6px; cursor: pointer;">
+                                确认修改
+                            </button>
+                        </div>
+                    `;
+
+                    modal.appendChild(dialog);
+                    document.body.appendChild(modal);
+
+                    const input = document.getElementById('editPrincipal');
+                    input.focus();
+                    input.select();
+
+                    const cleanup = () => {
+                        if (document.body.contains(modal)) {
+                            document.body.removeChild(modal);
+                        }
+                    };
+
+                    document.getElementById('confirmEdit').onclick = () => {
+                        const newPrincipal = parseFloat(input.value);
+                        if (newPrincipal && newPrincipal > 0) {
+                            cleanup();
+                            resolve(newPrincipal);
+                        } else {
+                            input.style.borderColor = '#dc3545';
+                            input.focus();
+                        }
+                    };
+
+                    document.getElementById('cancelEdit').onclick = () => {
+                        cleanup();
+                        resolve(null);
+                    };
+
+                    // 支持Enter键确认
+                    input.addEventListener('keypress', (e) => {
+                        if (e.key === 'Enter') {
+                            document.getElementById('confirmEdit').click();
+                        }
+                    });
+
+                    // 支持Esc键取消
+                    document.addEventListener('keydown', function escHandler(e) {
+                        if (e.key === 'Escape') {
+                            cleanup();
+                            resolve(null);
+                            document.removeEventListener('keydown', escHandler);
+                        }
+                    });
+
+                    // 点击背景关闭
+                    modal.onclick = (e) => {
+                        if (e.target === modal) {
+                            cleanup();
+                            resolve(null);
+                        }
+                    };
+                });
+            }
+
+            deleteFund(id) {
+                if (confirm('确定删除这个基金吗？')) {
+                    this.funds = this.funds.filter(fund => fund.id !== id);
+                    this.saveToStorage();
+                    this.renderFunds();
+                    this.updateStats();
+                    this.showMessage('删除成功', 'success');
+                }
+            }
+
+            async refreshAllFunds() {
+                if (this.funds.length === 0 || this.isLoading) return;
+
+                this.isLoading = true;
+                const refreshBtn = document.getElementById('refreshBtn');
+                refreshBtn.classList.add('loading');
+                refreshBtn.innerHTML = '<span class="icon">🔄</span> 刷新中...';
+
+                // 设置loading状态
+                this.funds.forEach(fund => fund.loading = true);
+                this.renderFunds();
+
+                try {
+                    const promises = this.funds.map(async (fund) => {
+                        const fundData = await this.fetchFundData(fund.code);
+                        if (fundData) {
+                            const updatedFund = await this.createFundObject(fundData, fund.principal);
+                            updatedFund.id = fund.id; // 保持原有ID
+                            return updatedFund;
+                        }
+                        return { ...fund, loading: false };
+                    });
+
+                    this.funds = await Promise.all(promises);
+                    this.saveToStorage();
+                    this.renderFunds();
+                    this.updateStats();
+                    this.showMessage('数据刷新成功', 'success');
+                    
+                } catch (error) {
+                    console.error('刷新数据失败:', error);
+                    this.showMessage('刷新数据失败', 'error');
+                    this.funds.forEach(fund => fund.loading = false);
+                    this.renderFunds();
+                } finally {
+                    this.isLoading = false;
+                    refreshBtn.classList.remove('loading');
+                    refreshBtn.innerHTML = '<span class="icon">🔄</span> 刷新数据';
+                }
+            }
+
+            sortFunds(key) {
+                if (this.funds.length === 0) return;
+
+                // 更新排序配置
+                if (this.sortConfig.key === key) {
+                    // 如果点击的是同一列，切换排序方向
+                    this.sortConfig.direction = this.sortConfig.direction === 'asc' ? 'desc' : 'asc';
+                } else {
+                    // 如果点击的是不同列，设置为升序
+                    this.sortConfig.key = key;
+                    this.sortConfig.direction = 'asc';
+                }
+
+                // 执行排序
+                this.funds.sort((a, b) => {
+                    let aValue = a[key];
+                    let bValue = b[key];
+
+                    // 处理策略对象的排序
+                    if (key.endsWith('Strategy') && aValue && bValue) {
+                        aValue = aValue.signal;
+                        bValue = bValue.signal;
+                        
+                        // 策略信号优先级：buy > hold > neutral > sell > loading
+                        const signalPriority = { 'buy': 4, 'hold': 3, 'neutral': 2, 'sell': 1, 'loading': 0 };
+                        const aPriority = signalPriority[aValue] || 0;
+                        const bPriority = signalPriority[bValue] || 0;
+                        
+                        return this.sortConfig.direction === 'asc' ? aPriority - bPriority : bPriority - aPriority;
+                    }
+
+                    // 处理不同数据类型的排序
+                    if (typeof aValue === 'number' && typeof bValue === 'number') {
+                        return this.sortConfig.direction === 'asc' ? aValue - bValue : bValue - aValue;
+                    } else if (typeof aValue === 'string' && typeof bValue === 'string') {
+                        if (this.sortConfig.direction === 'asc') {
+                            return aValue.localeCompare(bValue);
+                        } else {
+                            return bValue.localeCompare(aValue);
+                        }
+                    }
+                    return 0;
+                });
+
+                // 更新排序指示器
+                this.updateSortIndicators();
+                
+                // 重新渲染表格
+                this.renderFunds();
+                
+                // 保存排序后的数据
+                this.saveToStorage();
+            }
+
+            updateSortIndicators() {
+                // 清除所有排序指示器
+                document.querySelectorAll('.sort-indicator').forEach(indicator => {
+                    indicator.textContent = '';
+                    indicator.classList.remove('active');
+                });
+
+                // 设置当前排序列的指示器
+                if (this.sortConfig.key) {
+                    const indicator = document.getElementById(`sort-${this.sortConfig.key}`);
+                    if (indicator) {
+                        indicator.textContent = this.sortConfig.direction === 'asc' ? '↑' : '↓';
+                        indicator.classList.add('active');
+                    }
+                }
+            }
+
+            // 渲染策略信号
+            renderStrategySignal(strategy) {
+                if (!strategy) {
+                    return '<span class="strategy-signal strategy-loading">计算中</span>';
+                }
+                
+                const classMap = {
+                    'buy': 'strategy-buy',
+                    'sell': 'strategy-sell',
+                    'hold': 'strategy-hold',
+                    'neutral': 'strategy-neutral',
+                    'loading': 'strategy-loading'
+                };
+                
+                const className = classMap[strategy.signal] || 'strategy-neutral';
+                return `<span class="strategy-signal ${className}">${strategy.text}</span>`;
+            }
+
+            renderFunds() {
+                const tbody = document.getElementById('fundsTableBody');
+                const refreshBtn = document.getElementById('refreshBtn');
+                const dailyUpdateBtn = document.getElementById('dailyUpdateBtn');
+                
+                if (this.funds.length === 0) {
+                    tbody.innerHTML = `
+                        <tr>
+                            <td colspan="10" class="empty-state">
+                                <div>📊</div>
+                                <p>暂无基金数据，请先添加基金</p>
+                            </td>
+                        </tr>
+                    `;
+                    refreshBtn.style.display = 'none';
+                    dailyUpdateBtn.style.display = 'none';
+                    return;
+                }
+
+                const holdings = this.getNonSipFunds();
+                const hasHoldings = holdings.length > 0;
+
+                refreshBtn.style.display = this.funds.length > 0 ? 'inline-flex' : 'none';
+                dailyUpdateBtn.style.display = this.funds.length > 0 ? 'inline-flex' : 'none';
+                
+                if (!hasHoldings) {
+                    tbody.innerHTML = `
+                        <tr>
+                            <td colspan="14" class="empty-state">
+                                <div>📊</div>
+                                <p>暂无持有基金，已纳入定投计划的基金可在「定投基金」tab 查看</p>
+                            </td>
+                        </tr>
+                    `;
+                    this.updateStats();
+                    return;
+                }
+                
+                // 更新排序指示器
+                this.updateSortIndicators();
+                
+                tbody.innerHTML = holdings.map(fund => `
+                    <tr ${fund.loading ? 'class="loading"' : ''}>
+                        <td class="fund-code">${fund.code}</td>
+                        <td class="fund-name" title="${fund.name}">${fund.name}</td>
+                        <td class="number">${fund.principal.toLocaleString()}</td>
+                        <td class="number">${fund.currentValue.toFixed(4)}</td>
+                        <td class="number">${fund.estimateValue.toFixed(4)}</td>
+                        <td class="number ${fund.changeRate > 0 ? 'positive' : fund.changeRate < 0 ? 'negative' : 'neutral'}">
+                            ${fund.changeRate > 0 ? '+' : ''}${fund.changeRate.toFixed(2)}%
+                        </td>
+                        <td class="number ${fund.profit > 0 ? 'positive' : fund.profit < 0 ? 'negative' : 'neutral'}">
+                            ${fund.profit > 0 ? '+' : ''}${fund.profit.toLocaleString()}
+                        </td>
+                        <td class="number ${fund.profitRate > 0 ? 'positive' : fund.profitRate < 0 ? 'negative' : 'neutral'}">
+                            ${fund.profitRate > 0 ? '+' : ''}${fund.profitRate.toFixed(2)}%
+                        </td>
+                        <td>${this.renderStrategySignal(fund.maStrategy)}</td>
+                        <td>${this.renderStrategySignal(fund.maCrossoverStrategy)}</td>
+                        <td>${this.renderStrategySignal(fund.rsiStrategy)}</td>
+                        <td>${this.renderStrategySignal(fund.gridStrategy)}</td>
+                        <td class="update-time">${fund.updateTime}</td>
+                        <td>
+                            <button class="btn btn-warning" onclick="calculator.editFund('${fund.id}')" title="编辑本金">
+                                ✏️
+                            </button>
+                            <button class="btn btn-danger" onclick="calculator.deleteFund('${fund.id}')" title="删除基金">
+                                🗑️
+                            </button>
+                        </td>
+                    </tr>
+                `).join('');
+            }
+
+            updateStats() {
+                const statsSection = document.getElementById('statsSection');
+                const holdings = this.getNonSipFunds();
+
+                if (!holdings || holdings.length === 0) {
+                    statsSection.style.display = 'none';
+                    return;
+                }
+
+                statsSection.style.display = 'grid';
+
+                const totalPrincipal = holdings.reduce((sum, fund) => sum + fund.principal, 0);
+                const totalProfit = holdings.reduce((sum, fund) => sum + fund.profit, 0);
+                const totalMarketValue = totalPrincipal + totalProfit;
+                const totalProfitRate = totalPrincipal > 0 ? (totalProfit / totalPrincipal) * 100 : 0;
+
+                document.getElementById('totalPrincipal').textContent = totalPrincipal.toLocaleString();
+                document.getElementById('totalMarketValue').textContent = totalMarketValue.toLocaleString();
+                
+                const profitElement = document.getElementById('totalProfit');
+                profitElement.textContent = (totalProfit > 0 ? '+' : '') + totalProfit.toLocaleString();
+                profitElement.className = `value ${totalProfit > 0 ? 'positive' : totalProfit < 0 ? 'negative' : 'neutral'}`;
+                
+                const profitRateElement = document.getElementById('totalProfitRate');
+                profitRateElement.textContent = (totalProfitRate > 0 ? '+' : '') + totalProfitRate.toFixed(2);
+                profitRateElement.className = `value ${totalProfitRate > 0 ? 'positive' : totalProfitRate < 0 ? 'negative' : 'neutral'}`;
+            }
+
+            showMessage(text, type = 'success') {
+                const messageEl = document.getElementById('message');
+                messageEl.textContent = text;
+                messageEl.className = `message ${type}`;
+                messageEl.style.display = 'block';
+                
+                setTimeout(() => {
+                    messageEl.style.display = 'none';
+                }, 3000);
+            }
+
+            saveToStorage() {
+                localStorage.setItem('fund-calculator-data', JSON.stringify(this.funds));
+            }
+
+            async checkDailyUpdate() {
+                if (this.funds.length === 0 && this.sipPlans.length === 0) return;
+
+                const today = new Date().toDateString();
+                const lastUpdateDate = localStorage.getItem('fund-calculator-last-update');
+                
+                // 如果今天已经更新过，或者是第一次使用，则不进行更新
+                if (lastUpdateDate === today || !lastUpdateDate) {
+                    if (!lastUpdateDate) {
+                        localStorage.setItem('fund-calculator-last-update', today);
+                    }
+                    return;
+                }
+
+                // 显示确认对话框
+                const potentialSipContribution = this.calculatePotentialSipContributionForDate(new Date());
+                const shouldUpdate = await this.showDailyUpdateDialog(potentialSipContribution);
+                
+                if (shouldUpdate) {
+                    const result = await this.performDailyUpdate();
+                    localStorage.setItem('fund-calculator-last-update', today);
+                    const parts = [];
+                    if (result.totalProfitApplied !== 0) {
+                        parts.push(`收益 ${this.formatSignedCurrency(result.totalProfitApplied)} 元`);
+                    }
+                    if (result.totalSipContribution > 0) {
+                        parts.push(`定投 ${this.formatSignedCurrency(result.totalSipContribution)} 元`);
+                    }
+                    const detail = parts.length > 0 ? parts.join('，') : '无结算项目';
+                    this.showMessage(`每日数据更新完成！${detail} 已计入本金`, 'success');
+                } else {
+                    localStorage.setItem('fund-calculator-last-update', today);
+                }
+            }
+
+            showDailyUpdateDialog(potentialSipContribution = 0) {
+                return new Promise((resolve) => {
+                    const modal = document.createElement('div');
+                    modal.style.cssText = `
+                        position: fixed;
+                        top: 0;
+                        left: 0;
+                        width: 100%;
+                        height: 100%;
+                        background: rgba(0, 0, 0, 0.5);
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        z-index: 10000;
+                    `;
+
+                    const dialog = document.createElement('div');
+                    dialog.style.cssText = `
+                        background: white;
+                        padding: 30px;
+                        border-radius: 12px;
+                        max-width: 500px;
+                        margin: 20px;
+                        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+                    `;
+
+                    const sipColor = potentialSipContribution > 0 ? '#28a745' : '#6c757d';
+                    const sipDisplay = potentialSipContribution > 0
+                        ? `+${potentialSipContribution.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} 元`
+                        : '0 元';
+
+                    dialog.innerHTML = `
+                        <h3 style="margin: 0 0 15px 0; color: #333; font-size: 1.2em;">📅 每日数据更新</h3>
+                        <p style="margin: 0 0 20px 0; color: #666; line-height: 1.5;">
+                            检测到这是您今天第一次打开页面。<br>
+                            是否要将前一天的收益以及今日定投金额计入本金，实现复利计算？
+                        </p>
+                        <p style="margin: 0 0 20px 0; color: #666; line-height: 1.5;">
+                            今日预设定投金额：<span style="color: ${sipColor}; font-weight: bold;">${sipDisplay}</span>
+                        </p>
+                        <div style="display: flex; gap: 10px; justify-content: flex-end;">
+                            <button id="cancelUpdate" style="padding: 8px 16px; border: 1px solid #ddd; background: white; border-radius: 6px; cursor: pointer;">
+                                暂不更新
+                            </button>
+                            <button id="confirmUpdate" style="padding: 8px 16px; border: none; background: #4facfe; color: white; border-radius: 6px; cursor: pointer;">
+                                确认更新
+                            </button>
+                        </div>
+                    `;
+
+                    modal.appendChild(dialog);
+                    document.body.appendChild(modal);
+
+                    document.getElementById('confirmUpdate').onclick = () => {
+                        document.body.removeChild(modal);
+                        resolve(true);
+                    };
+
+                    document.getElementById('cancelUpdate').onclick = () => {
+                        document.body.removeChild(modal);
+                        resolve(false);
+                    };
+
+                    // 点击背景关闭
+                    modal.onclick = (e) => {
+                        if (e.target === modal) {
+                            document.body.removeChild(modal);
+                            resolve(false);
+                        }
+                    };
+                });
+            }
+
+            getWeekdayKey(date = new Date()) {
+                const day = date.getDay();
+                const map = {
+                    1: 'mon',
+                    2: 'tue',
+                    3: 'wed',
+                    4: 'thu',
+                    5: 'fri',
+                };
+                return map[day] || null;
+            }
+
+            isWorkday(date = new Date()) {
+                const day = date.getDay();
+                return day >= 1 && day <= 5;
+            }
+
+            calculatePotentialSipContributionForDate(date = new Date()) {
+                if (!this.isWorkday(date) || !this.sipPlans || this.sipPlans.length === 0) {
+                    return 0;
+                }
+                const weekdayKey = this.getWeekdayKey(date);
+                if (!weekdayKey) return 0;
+                return this.sipPlans.reduce((sum, plan) => {
+                    const amount = this.getPlanAmountForKey(plan, weekdayKey);
+                    return sum + (isNaN(amount) ? 0 : amount);
+                }, 0);
+            }
+
+            applySipContributionForFund(fundCode, date = new Date()) {
+                if (!this.isWorkday(date) || !this.sipPlans || this.sipPlans.length === 0) {
+                    return 0;
+                }
+                const weekdayKey = this.getWeekdayKey(date);
+                if (!weekdayKey) return 0;
+                let total = 0;
+                const dateString = date.toISOString().split('T')[0];
+
+                this.sipPlans.forEach((plan) => {
+                    if (plan.code !== fundCode) return;
+                    const amount = this.getPlanAmountForKey(plan, weekdayKey);
+                    if (amount > 0) {
+                        total += amount;
+                        plan.totalInvested = parseFloat(((parseFloat(plan.totalInvested || 0)) + amount).toFixed(2));
+                        plan.lastContributionDate = dateString;
+                    }
+                });
+
+                if (total > 0) {
+                    this.saveSipPlansToStorage();
+                }
+
+                return parseFloat(total.toFixed(2));
+            }
+
+            async performDailyUpdate() {
+                await this.ensureFundsForAllPlans();
+
+                if (this.funds.length === 0) {
+                    return { totalProfitApplied: 0, totalSipContribution: 0, isWorkday: this.isWorkday(), weekdayKey: this.getWeekdayKey() };
+                }
+
+                const today = new Date();
+                const isWorkday = this.isWorkday(today);
+                const weekdayKey = this.getWeekdayKey(today);
+                const totalProfitBeforeUpdate = this.funds.reduce((sum, fund) => sum + fund.profit, 0);
+                let totalSipContribution = 0;
+
+                const promises = this.funds.map(async (fund) => {
+                    const fundData = await this.fetchFundData(fund.code);
+                    if (fundData) {
+                        const sipContribution = isWorkday ? this.applySipContributionForFund(fund.code, today) : 0;
+                        totalSipContribution += sipContribution;
+                        const newPrincipal = fund.principal + fund.profit + sipContribution;
+
+                        const updatedFund = await this.createFundObject(fundData, newPrincipal);
+                        updatedFund.id = fund.id; // 保持原有ID
+                        return updatedFund;
+                    }
+                    return fund;
+                });
+
+                this.funds = await Promise.all(promises);
+                this.saveToStorage();
+                this.renderFunds();
+                this.updateStats();
+                this.updateSipStats();
+                this.renderSipPlans();
+
+                return {
+                    totalProfitApplied: parseFloat(totalProfitBeforeUpdate.toFixed(2)),
+                    totalSipContribution: parseFloat(totalSipContribution.toFixed(2)),
+                    isWorkday,
+                    weekdayKey,
+                };
+            }
+
+            async manualDailyUpdate() {
+                const potentialSipContribution = this.calculatePotentialSipContributionForDate(new Date());
+                const totalProfit = this.funds.reduce((sum, fund) => sum + fund.profit, 0);
+
+                if (this.funds.length === 0 && this.sipPlans.length === 0) {
+                    this.showMessage('当前没有可结算的基金或定投计划', 'warning');
+                    return;
+                }
+
+                if (totalProfit === 0 && potentialSipContribution === 0) {
+                    this.showMessage('当前没有收益或定投金额需要结算', 'warning');
+                    return;
+                }
+
+                const shouldUpdate = await this.showManualUpdateDialog(totalProfit, potentialSipContribution);
+                
+                if (shouldUpdate) {
+                    const dailyUpdateBtn = document.getElementById('dailyUpdateBtn');
+                    if (dailyUpdateBtn) {
+                        dailyUpdateBtn.disabled = true;
+                        dailyUpdateBtn.innerHTML = '<span>⏳</span> 结算中...';
+                    }
+
+                    try {
+                        const result = await this.performDailyUpdate();
+                        const today = new Date().toDateString();
+                        localStorage.setItem('fund-calculator-last-update', today);
+                        const parts = [];
+                        if (result.totalProfitApplied !== 0) {
+                            parts.push(`收益 ${this.formatSignedCurrency(result.totalProfitApplied)} 元`);
+                        }
+                        if (result.totalSipContribution > 0) {
+                            parts.push(`定投 ${this.formatSignedCurrency(result.totalSipContribution)} 元`);
+                        }
+                        const detail = parts.length > 0 ? parts.join('，') : '无结算项目';
+                        this.showMessage(`手动结算完成！${detail} 已计入本金`, 'success');
+                    } catch (error) {
+                        console.error('手动结算失败:', error);
+                        this.showMessage('手动结算失败', 'error');
+                    } finally {
+                        if (dailyUpdateBtn) {
+                            dailyUpdateBtn.disabled = false;
+                            dailyUpdateBtn.innerHTML = '<span>📅</span> 手动结算';
+                        }
+                    }
+                }
+            }
+
+            showManualUpdateDialog(totalProfit, sipContribution) {
+                return new Promise((resolve) => {
+                    const modal = document.createElement('div');
+                    modal.style.cssText = `
+                        position: fixed;
+                        top: 0;
+                        left: 0;
+                        width: 100%;
+                        height: 100%;
+                        background: rgba(0, 0, 0, 0.5);
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        z-index: 10000;
+                    `;
+
+                    const dialog = document.createElement('div');
+                    dialog.style.cssText = `
+                        background: white;
+                        padding: 30px;
+                        border-radius: 12px;
+                        max-width: 500px;
+                        margin: 20px;
+                        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+                    `;
+
+                    const profitColor = totalProfit > 0 ? '#28a745' : totalProfit < 0 ? '#dc3545' : '#6c757d';
+                    const profitDisplay = `${this.formatSignedCurrency(totalProfit)} 元`;
+
+                    const sipColor = sipContribution > 0 ? '#28a745' : '#6c757d';
+                    const sipDisplay = `${this.formatSignedCurrency(sipContribution)} 元`;
+
+                    dialog.innerHTML = `
+                        <h3 style="margin: 0 0 15px 0; color: #333; font-size: 1.2em;">💰 手动结算确认</h3>
+                        <p style="margin: 0 0 15px 0; color: #666; line-height: 1.5;">
+                            当前总收益：<span style="color: ${profitColor}; font-weight: bold; font-size: 1.1em;">${profitDisplay}</span>
+                        </p>
+                        <p style="margin: 0 0 15px 0; color: #666; line-height: 1.5;">
+                            今日定投金额：<span style="color: ${sipColor}; font-weight: bold; font-size: 1.1em;">${sipDisplay}</span>
+                        </p>
+                        <p style="margin: 0 0 20px 0; color: #666; line-height: 1.5;">
+                            确认将当前收益计入本金进行复利计算吗？<br>
+                            <small style="color: #999;">此操作将重置收益计算基准，并将今日定投金额计入本金。</small>
+                        </p>
+                        <div style="display: flex; gap: 10px; justify-content: flex-end;">
+                            <button id="cancelManualUpdate" style="padding: 8px 16px; border: 1px solid #ddd; background: white; border-radius: 6px; cursor: pointer;">
+                                取消
+                            </button>
+                            <button id="confirmManualUpdate" style="padding: 8px 16px; border: none; background: #28a745; color: white; border-radius: 6px; cursor: pointer;">
+                                确认结算
+                            </button>
+                        </div>
+                    `;
+
+                    modal.appendChild(dialog);
+                    document.body.appendChild(modal);
+
+                    document.getElementById('confirmManualUpdate').onclick = () => {
+                        document.body.removeChild(modal);
+                        resolve(true);
+                    };
+
+                    document.getElementById('cancelManualUpdate').onclick = () => {
+                        document.body.removeChild(modal);
+                        resolve(false);
+                    };
+
+                    // 点击背景关闭
+                    modal.onclick = (e) => {
+                        if (e.target === modal) {
+                            document.body.removeChild(modal);
+                            resolve(false);
+                        }
+                    };
+                });
+            }
+
+            loadFromStorage() {
+                const saved = localStorage.getItem('fund-calculator-data');
+                if (saved) {
+                    try {
+                        const parsed = JSON.parse(saved);
+                        if (Array.isArray(parsed)) {
+                            this.funds = parsed.filter((item) => item && typeof item.code === 'string' && item.code.trim());
+                        } else {
+                            this.funds = [];
+                        }
+                    } catch (error) {
+                        console.error('解析本地存储数据失败:', error);
+                        this.funds = [];
+                    }
+                }
+            }
+
+            normalizeSipPlanData(plan) {
+                const weekdayKeys = ['mon', 'tue', 'wed', 'thu', 'fri'];
+                const amounts = {};
+                weekdayKeys.forEach((key) => {
+                    const value = plan && plan.amounts ? plan.amounts[key] : 0;
+                    const parsed = parseFloat(value);
+                    amounts[key] = isNaN(parsed) ? 0 : parsed;
+                });
+
+                let uniformAmount = typeof plan.uniformAmount === 'number' ? plan.uniformAmount : null;
+                const values = weekdayKeys.map(key => amounts[key]);
+                const allEqual = values.every(value => value === values[0]);
+                if (uniformAmount === null && allEqual) {
+                    uniformAmount = values[0];
+                }
+
+                return {
+                    id: plan.id || Date.now().toString(),
+                    code: plan.code || '',
+                    name: plan.name || '',
+                    amounts,
+                    uniformAmount: typeof uniformAmount === 'number' ? parseFloat(uniformAmount.toFixed(2)) : undefined,
+                    totalInvested: parseFloat(plan.totalInvested || 0),
+                    lastContributionDate: plan.lastContributionDate || null,
+                    createdAt: plan.createdAt || new Date().toISOString(),
+                    initialPrincipal: parseFloat(plan.initialPrincipal || 0),
+                    initialPrincipalApplied: plan.initialPrincipalApplied !== undefined ? plan.initialPrincipalApplied : true,
+                };
+            }
+
+            loadSipPlans() {
+                const saved = localStorage.getItem('fund-calculator-sip-plans');
+                if (saved) {
+                    try {
+                        const plans = JSON.parse(saved);
+                        if (Array.isArray(plans)) {
+                            this.sipPlans = plans.map(plan => this.normalizeSipPlanData(plan));
+                        } else {
+                            this.sipPlans = [];
+                        }
+                    } catch (error) {
+                        console.error('解析定投计划数据失败:', error);
+                        this.sipPlans = [];
+                    }
+                }
+            }
+
+            saveSipPlansToStorage() {
+                try {
+                    localStorage.setItem('fund-calculator-sip-plans', JSON.stringify(this.sipPlans));
+                } catch (error) {
+                    console.error('保存定投计划失败:', error);
+                }
+            }
+
+            getWeekdayKeys() {
+                return ['mon', 'tue', 'wed', 'thu', 'fri'];
+            }
+
+            createUniformAmounts(amount) {
+                const keys = this.getWeekdayKeys();
+                const result = {};
+                const numericAmount = parseFloat(amount) || 0;
+                keys.forEach((key) => {
+                    result[key] = parseFloat(numericAmount.toFixed(2));
+                });
+                return result;
+            }
+
+            ensurePlanAmounts(plan) {
+                if (!plan.amounts) {
+                    plan.amounts = this.createUniformAmounts(plan.uniformAmount || 0);
+                }
+                if (typeof plan.uniformAmount === 'number') {
+                    plan.amounts = this.createUniformAmounts(plan.uniformAmount);
+                } else {
+                    const amounts = plan.amounts || {};
+                    const values = this.getWeekdayKeys().map((key) => parseFloat(amounts[key] || 0));
+                    const allEqual = values.every(value => value === values[0]);
+                    if (allEqual) {
+                        plan.uniformAmount = parseFloat((values[0] || 0).toFixed(2));
+                    }
+                }
+            }
+
+            getPlanAmountForKey(plan, key) {
+                this.ensurePlanAmounts(plan);
+                if (typeof plan.uniformAmount === 'number') {
+                    return plan.uniformAmount;
+                }
+                if (!plan.amounts) return 0;
+                return parseFloat(plan.amounts[key] || 0) || 0;
+            }
+
+            getSipFundCodes() {
+                return new Set((this.sipPlans || []).map(plan => plan.code));
+            }
+
+            getNonSipFunds() {
+                const sipCodes = this.getSipFundCodes();
+                return (this.funds || []).filter(fund => fund && typeof fund.code === 'string' && fund.code && !sipCodes.has(fund.code));
+            }
+
+            // 保存历史数据缓存到localStorage
+            saveHistoryCache() {
+                try {
+                    localStorage.setItem('fund-calculator-history-cache', JSON.stringify(this.historyCache));
+                } catch (error) {
+                    console.error('保存历史数据缓存失败:', error);
+                }
+            }
+
+            // 从localStorage加载历史数据缓存
+            loadHistoryCache() {
+                const saved = localStorage.getItem('fund-calculator-history-cache');
+                if (saved) {
+                    try {
+                        const parsed = JSON.parse(saved);
+                        const normalizedCache = {};
+                        if (parsed && typeof parsed === 'object') {
+                            Object.entries(parsed).forEach(([code, entry]) => {
+                                if (!code) return;
+                                if (entry && Array.isArray(entry.data)) {
+                                    normalizedCache[code] = {
+                                        data: entry.data,
+                                        updatedAt: entry.updatedAt || null,
+                                        source: entry.source || 'cache'
+                                    };
+                                } else if (Array.isArray(entry)) {
+                                    normalizedCache[code] = {
+                                        data: entry,
+                                        updatedAt: null,
+                                        source: 'legacy'
+                                    };
+                                }
+                            });
+                        }
+                        this.historyCache = normalizedCache;
+                        if (Object.keys(this.historyCache).length > 0) {
+                            console.log('已加载历史数据缓存，共', Object.keys(this.historyCache).length, '个基金');
+                        }
+                    } catch (error) {
+                        console.error('解析历史数据缓存失败:', error);
+                        this.historyCache = {};
+                    }
+                }
+            }
+        }
+
+        // 初始化应用
+        const calculator = new FundCalculator();
+    </script>
+</body>
+</html>
